@@ -1,7 +1,6 @@
 // Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Extensions;
@@ -71,7 +70,7 @@ namespace IdentityServer4.Endpoints.Results
 
         private async Task ProcessErrorAsync(HttpContext context)
         {
-            // these are the conditions where we can send a response 
+            // these are the conditions where we can send a response
             // back directly to the client, otherwise we're only showing the error UI
             var isPromptNoneError = Response.Error == OidcConstants.AuthorizeErrors.AccountSelectionRequired ||
                 Response.Error == OidcConstants.AuthorizeErrors.LoginRequired ||
@@ -159,7 +158,7 @@ namespace IdentityServer4.Endpoints.Results
             return uri;
         }
 
-        private const string FormPostHtml = "<html><head><meta http-equiv='X-UA-Compatible' content='IE=edge' /><base target='_self'/></head><body><form method='post' action='{uri}'>{body}<noscript><button>Click to continue</button></noscript></form><script>window.addEventListener('load', function(){document.forms[0].submit();});</script></body></html>";
+        private const string FormPostHtml = "<html><head><meta http-equiv='X-UA-Compatible' content='IE=edge' /><base target='_self'/></head><body><form method='post' action='{uri}'>{body}<button>Click to continue</button></form><script>window.addEventListener('load', function(){document.forms[0].submit();});</script></body></html>";
 
         private string GetFormPostHtml()
         {
