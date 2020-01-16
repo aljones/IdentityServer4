@@ -158,7 +158,30 @@ namespace IdentityServer4.Endpoints.Results
             return uri;
         }
 
-        private const string FormPostHtml = "<html><head><meta http-equiv='X-UA-Compatible' content='IE=edge' /><base target='_self'/></head><body><form method='post' action='{uri}'>{body}<button type='submit'>Click to continue</button></form><script>window.addEventListener('load', function(){document.forms[0].submit();});</script></body></html>";
+        private const string FormPostHtml = @"<html>
+    <head>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+        <base target='_self'/>
+    </head>
+    <body>
+        <form method='post' action='{uri}'>
+            {body}
+            <button type='submit'>Click to continue</button>
+        </form>
+        <script>
+            function addEvent (obj, type, fn) {
+                if (obj.attachEvent) {
+                    obj['e'+type+fn] = fn;
+                    obj[type+fn] = function(){obj['e'+type+fn]( window.event );}
+                    obj.attachEvent( 'on'+type, obj[type+fn] );
+                } else {
+                    obj.addEventListener( type, fn, false );
+                }
+            }
+            addEvent(window, 'load', function(){ document.forms[0].submit(); });
+        </script>
+        </body>
+</html>";
 
         private string GetFormPostHtml()
         {
