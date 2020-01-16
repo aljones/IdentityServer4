@@ -1,7 +1,6 @@
 // Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Extensions;
@@ -71,7 +70,7 @@ namespace IdentityServer4.Endpoints.Results
 
         private async Task ProcessErrorAsync(HttpContext context)
         {
-            // these are the conditions where we can send a response 
+            // these are the conditions where we can send a response
             // back directly to the client, otherwise we're only showing the error UI
             var isSafeError =
                 Response.Error == OidcConstants.AuthorizeErrors.AccessDenied ||
@@ -127,7 +126,7 @@ namespace IdentityServer4.Endpoints.Results
 
         private void AddSecurityHeaders(HttpContext context)
         {
-            context.Response.AddScriptCspHeaders(_options.Csp, "sha256-orD0/VhH8hLqrLxKHD/HUEMdwqX6/0ve7c5hspX5VJ8=");
+            context.Response.AddScriptCspHeaders(_options.Csp, "sha256-UFeKYu6k6U5uLFcvvP6KFUphsU2RucKDnvQXYiYJ9uA="); // sha256-orD0/VhH8hLqrLxKHD/HUEMdwqX6/0ve7c5hspX5VJ8=");
 
             var referrer_policy = "no-referrer";
             if (!context.Response.Headers.ContainsKey("Referrer-Policy"))
@@ -159,7 +158,32 @@ namespace IdentityServer4.Endpoints.Results
             return uri;
         }
 
-        private const string FormPostHtml = "<html><head><meta http-equiv='X-UA-Compatible' content='IE=edge' /><base target='_self'/></head><body><form method='post' action='{uri}'>{body}<noscript><button>Click to continue</button></noscript></form><script>window.addEventListener('load', function(){document.forms[0].submit();});</script></body></html>";
+        private const string FormPostHtml = @"<html>
+    <head>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+        <base target='_self'/>
+    </head>
+    <body>
+        <form method='post' action='{uri}'>
+            {body}
+            <noscript>
+                <input type='submit' value='Click to continue' />
+            </noscript>
+        </form>
+        <script>
+            function addEvent (obj, type, fn) {
+                if (obj.attachEvent) {
+                    obj['e'+type+fn] = fn;
+                    obj[type+fn] = function(){obj['e'+type+fn]( window.event );}
+                    obj.attachEvent( 'on'+type, obj[type+fn] );
+                } else {
+                    obj.addEventListener( type, fn, false );
+                }
+            }
+            addEvent(window, 'load', function() { document.forms[0].submit(); });
+        </script>
+        </body>
+</html>";
 
         private string GetFormPostHtml()
         {
