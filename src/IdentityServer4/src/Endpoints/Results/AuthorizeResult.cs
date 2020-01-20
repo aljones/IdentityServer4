@@ -166,9 +166,11 @@ namespace IdentityServer4.Endpoints.Results
     <body>
         <form method='post' action='{uri}'>
             {body}
-            <input type='submit' value='Click to continue' />
+            <noscript>
+                <input type='submit' value='Click to continue' />
+            </noscript>
         </form>
-        <noscript>
+        <script>
             function addEvent (obj, type, fn) {
                 if (obj.attachEvent) {
                     obj['e'+type+fn] = fn;
@@ -179,7 +181,7 @@ namespace IdentityServer4.Endpoints.Results
                 }
             }
             addEvent(window, 'load', function() { document.forms[0].submit(); });
-        </noscript>
+        </script>
         </body>
 </html>";
 
