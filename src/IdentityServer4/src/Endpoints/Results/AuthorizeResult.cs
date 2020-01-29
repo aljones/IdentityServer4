@@ -126,7 +126,7 @@ namespace IdentityServer4.Endpoints.Results
 
         private void AddSecurityHeaders(HttpContext context)
         {
-            context.Response.AddScriptCspHeaders(_options.Csp, "sha256-orD0/VhH8hLqrLxKHD/HUEMdwqX6/0ve7c5hspX5VJ8=");
+            context.Response.AddScriptCspHeaders(_options.Csp, "sha256-UFeKYu6k6U5uLFcvvP6KFUphsU2RucKDnvQXYiYJ9uA="); // sha256-orD0/VhH8hLqrLxKHD/HUEMdwqX6/0ve7c5hspX5VJ8=");
 
             var referrer_policy = "no-referrer";
             if (!context.Response.Headers.ContainsKey("Referrer-Policy"))
